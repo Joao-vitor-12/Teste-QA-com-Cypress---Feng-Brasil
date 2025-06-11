@@ -1,6 +1,6 @@
 # Teste de QA - Automação com Cypress
 
-**Autor:** João Vitor Brito da Rocha  
+**Nome:** João Vitor Brito da Rocha  
 **Idade:** 24 anos  
 
 Este repositório contém as respostas teóricas e automações de testes desenvolvida com Cypress para validação de **cadastro** e **login**
