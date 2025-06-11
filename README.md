@@ -114,6 +114,6 @@ Utilizando os dados de cadastro da questão 1:
 ## 💻 Tecnologias utilizadas
 
 - [Cypress](https://www.cypress.io/)
-- JavaScript (ES6)
+- JavaScript
 - Node.js
 
