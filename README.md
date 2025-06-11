@@ -112,4 +112,3 @@ Utilizando os dados de cadastro da questão 1:
 - JavaScript (ES6)
 - Node.js
 
----
