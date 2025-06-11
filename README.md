@@ -3,7 +3,7 @@
 **Nome:** João Vitor Brito da Rocha  
 **Idade:** 24 anos  
 
-Este repositório contém as respostas teóricas e automações de testes desenvolvida com Cypress para validação de **cadastro** e **login**
+Repositório contém todas as respostas teóricas e automações de testes desenvolvido com Cypress para validação de **cadastro** e **login**
 
 ---
 
