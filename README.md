@@ -16,7 +16,7 @@ Teste automatizado em Cypress que realiza o cadastro com sucesso utilizando um t
 - Preenche todos os dados válidos
 - Seleciona DDI +55 (Brasil)
 - Finaliza o cadastro com sucesso
-
+[🔗 Ver código da Questão 1](./cypress/e2e/cadastro_sucesso.cy.js)
 ---
 
 ## ✅ Questão 2 - Login com sucesso
