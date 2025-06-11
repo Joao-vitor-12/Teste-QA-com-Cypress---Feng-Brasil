@@ -30,6 +30,9 @@ Utilizando os dados de cadastro da questão 1:
 - Insere e-mail e senha válidos
 - Verifica a mensagem de boas-vindas
 - Realiza o logout
+- - Código:
+[`loguin.cy.js`](https://github.com/Joao-vitor-12/TesteQA-Feng-Brasil/blob/main/cypress/e2e/login.cy.js)
+
 
 ---
 
