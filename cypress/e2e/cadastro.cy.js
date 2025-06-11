@@ -1,113 +1,56 @@
-describe('Cadastro de usuário - Fluxos positivo e negativo', () => {
+describe('Cadastro de usuário', () => {
+  // Dados válidos usados para o cadastro de usuário
+  const usuario = {
+    documento: '43626593827',
+    nome: 'Joao Vitor Brito da Rocha',
+    email: 'bvitor870@gmail.com',
+    nascimento: '30/08/2000',
+    ddi: '+55 Brasil',
+    telefone: '11916398676',
+    senha: 'Feng19280@!'
+  };
 
-  context('Cenário Positivo - Cadastro válido', () => {
-    it('Deve realizar o cadastro com sucesso', () => {
-      cy.visit('https://fengbrasil.com')
+  
+  beforeEach(() => {
+    cy.visit('https://fengbrasil.com');
+    cy.get('#register').click();
+  });
 
-      //Home deslogada - Location: “/”
+  // Cenário positivo: realiza cadastro com dados válidos
+  it('Deve realizar o cadastro com sucesso', () => {
+    cy.get('#document').type(usuario.documento);
+    cy.get('#name').type(usuario.nome);
+    cy.get('#email').type(usuario.email);
+    cy.get('#birth_date').type(usuario.nascimento);
+    cy.get('#ddi').click();
+    cy.contains('.ddi_option', usuario.ddi).click();
+    cy.get('#cellphone').type(usuario.telefone);
+    cy.get('#password').type(usuario.senha);
+    cy.get('#submit_button').click();
 
-      // Verificando se o botão "Cadastre-se" está visível antes de clicar
-      cy.get('#register')
-        .should('be.visible')
-        .click()
+    // Valida que o cadastro foi concluído e o usuário está na página inicial
+    cy.url().should('eq', 'https://fengbrasil.com/');
+    cy.contains('Cadastre-se').should('be.visible'); 
+  });
 
+  // Cenário negativo: tenta cadastrar com dados inválidos e valida mensagens de erro
+  it('Deve exibir mensagens de erro para dados inválidos', () => {
+    cy.get('#document').type('feng123'); // Documento inválido (texto não numérico)
+    cy.get('#name').type('Jo');           // Nome muito curto/inválido
+    cy.get('#email').type('joao.vitor.com'); // Email inválido (formato incorreto)
+    cy.get('#birth_date').type('10/06/2017'); // Data de nascimento inválida (menor de 18 anos)
+    cy.get('#ddi').click();
+    cy.contains('.ddi_option', '+999 PaísDesconhecido').click(); // Código de país inválido
+    cy.get('#cellphone').type('119999999999'); // Telefone inválido (número muito longo)
+    cy.get('#password').type('SENHA');          // Senha fraca
+    cy.get('#submit_button').click();
 
-      //Cadastro - Location: “/register”
-
-      // Preenchendo CPF válido
-      cy.get('#document')
-        .should('be.visible')
-        .type('43626593827')
-
-      // Preenchendo nome válido
-      cy.get('#name')
-        .should('be.visible')
-        .type('Joao Vitor Brito da Rocha')
-
-      // Preenchendo e-mail válido
-      cy.get('#email')
-        .should('be.visible')
-        .type('bvitor870@gmail.com')
-
-      // Preenchendo data de nascimento válida
-      cy.get('#birth_date')
-        .should('be.visible')
-        .type('30/08/2000')
-
-      // Selecionando DDI do Brasil
-      cy.get('#ddi')
-        .should('be.visible')
-        .click()
-      cy.wait(200)
-      cy.contains('.ddi_option', '+55 Brasil').click()
-
-      // Preenchendo número de celular válido
-      cy.get('#cellphone')
-        .should('be.visible')
-        .type('11916398676')
-
-      // Preenchendo senha válida
-      cy.get('#password')
-        .should('be.visible')
-        .type('Feng19280@!')
-
-      // Clicando no botão "Prosseguir" para enviar cadastro
-      cy.get('#submit_button')
-        .should('be.visible')
-        .click()
-    })
-  })
-
-  context('Cenário Negativo - Cadastro inválido', () => {
-    it('Deve exibir mensagens de erro para dados inválidos', () => {
-      cy.visit('https://fengbrasil.com')
-
-        //Home deslogada - Location: “/”
-
-        // Verificando se o botão "Cadastre-se" está visível antes de clicar
-         cy.get('#register')
-        .should('be.visible')
-        .click()
-
-
-      //Cadastro - Location: “/register”
-
-      // Preenchendo CPF inválido 
-      cy.get('#document')
-        .should('be.visible')
-        .type('feng123') // deverá retornar mensagem de CPF inválido
-
-      // Preenchendo nome inválido 
-      cy.get('#name')
-        .should('be.visible')
-        .type('Jo') // deverá retornar mensagem de nome inválido
-
-      // Preenchendo e-mail inválido 
-      cy.get('#email')
-        .should('be.visible')
-        .type('joao.vitor.com') // deverá retornar mensagem de e-mail inválido
-
-      // Preenchendo data inválida 
-      cy.get('#birth_date')
-        .should('be.visible')
-        .type('10/06/2017') // deverá retornar mensagem de menor de idade 
-
-      // Selecionando DDI inválido 
-      cy.get('#ddi')
-        .should('be.visible')
-        .click()
-      cy.wait(200) 
-      cy.contains('.ddi_option', '+999 PaísDesconhecido').click() // deverá retornar mensagem de País não encontrado
-
-      // Preenchendo celular inválido 
-      cy.get('#cellphone')
-        .should('be.visible')
-        .type('119999999999') // deverá retornar mensagem de número inválido
-
-      // Preenchendo senha inválida 
-      cy.get('#password')
-        .should('be.visible')
-        .type('SENHA') // deverá retornar mensagem de senha inválida
-    })
-  })
-})
+    // Valida as mensagens de erro específicas para cada campo inválido (considerando que o sistema exiba mensagens com esses IDs)
+    cy.get('#document-helper-text').should('contain', 'Documento inválido');
+    cy.get('#name-helper-text').should('contain', 'Nome inválido');
+    cy.get('#email-helper-text').should('contain', 'E-mail inválido');
+    cy.get('#birth_date-helper-text').should('contain', 'Idade mínima é 18');
+    cy.get('#cellphone-helper-text').should('contain', 'Telefone inválido');
+    cy.get('#password-helper-text').should('contain', 'Senha fraca');
+  });
+});

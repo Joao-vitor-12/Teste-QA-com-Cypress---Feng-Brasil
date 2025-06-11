@@ -1,54 +1,43 @@
-describe("Cadastro válido e inválido - Login", () => {
-    
-  context("Cenário Positivo - Login válido", () => {
-    it("Deve realizar login com sucesso e fazer logout", () => {
-      cy.visit("https://fengbrasil.com");
+describe('Login de usuário', () => {
+  // Dados fixos para realizar login (email e senha cadastrados anteriormente)
+  const email = 'bvitor870@gmail.com';
+  const senha = 'Feng19280@!';
 
-      //Home deslogada - Location: “/”
-
-      // Verificando se o botão "login" está visível antes de clicar
-      cy.get("#login").should("be.visible").click();
-
-      // Preenchendo e-mail válido
-      cy.get("#login_email").should("be.visible").type("bvitor870@gmail.com");
-
-      // Preenchendo senha válida
-      cy.get("#login_password").should("be.visible").type("Feng19280@!");
-
-      // Clicando no botão "Entrar"
-      cy.get("#login_button").should("be.visible").click();
-
-      cy.wait(200);
-
-      
-      //Home logada - Location: “/home”
-
-      // Verificando se o login foi realizado com sucesso
-      cy.get(".welcome_message").should("contain.text", "Bem-vindo(a),QA!");
-
-      cy.get(".welcome_header").should("contain.text", "Olá, QA!");
-
-      // Realizando logout
-      cy.get("#logout_button").should("be.visible").click();
-    });
+  beforeEach(() => {
+    cy.visit('https://fengbrasil.com');
+    cy.get('#login').click();
   });
 
-  context("Cenário Negativo - Login inválido", () => {
-    it("Deve exibir mensagens de erro para login inválido", () => {
-      cy.visit("https://fengbrasil.com");
+  // Preenchendo com os dados válidos para realizar o login 
+  it('Deve realizar login com sucesso e fazer logout', () => {
+    cy.get('#login_email').type(email);
+    cy.get('#login_password').type(senha);
+    cy.get('#login_button').click();
 
-      //Home deslogada - Location: “/”
-      // Verificando se o botão "login" está visível antes de clicar
-      cy.get("#login").should("be.visible").click();
+    // Validações após o login
+    cy.url().should('include', '/home');
+    cy.get('.welcome_message').should('contain.text', 'Bem-vindo');
+    cy.get('.welcome_header').should('contain.text', 'Olá');
+    
+    // Logout
+    cy.get('#logout_button').click();
+  });
 
-      // Clicando diretamente em "Entrar" sem preencher os campos
-      cy.get("#login_button").should("be.visible").click(); // deverá retornar mensagem para preencher os campos primeiro
+  // Teste para verificar mensagens de erro ao tentar login com dados inválidos
+  it('Deve exibir mensagens de erro para login inválido', () => {
 
-      // Preenchendo e-mail inválido
-      cy.get("#login_email").should("be.visible").type("joao.vitor@com"); // deverá retornar mensagem de e-mail incorreto
+    // Tenta logar sem preencher campos
+    cy.get('#login_button').click();
+    
+    // Verificações das mensagens de erro (considerando que o sistema exiba mensagens com essas Class)
+    cy.get('.error-message').should('contain', 'Preencha todos os campos');
 
-      // Preenchendo senha inválida
-      cy.get("#login_password").should("be.visible").type("senha123"); // deverá retornar mensagem de senha inválida
-    });
+    // Preenchendo com email inválido e senha incorreta
+    cy.get('#login_email').type('joao.vitor.com');
+    cy.get('#login_password').type('senha123');
+    cy.get('#login_button').click();
+
+    // Valida mensagem de erro para e-mail e senha incorretas
+    cy.get('.error-message').should('contain', 'E-mail ou senha inválidos');
   });
 });
