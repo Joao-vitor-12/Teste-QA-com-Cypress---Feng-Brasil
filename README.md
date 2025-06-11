@@ -1,4 +1,4 @@
-# Teste de QA - Automação com Cypress
+# Teste QA - Automação com Cypress
 
 **Nome:** João Vitor Brito da Rocha  
 **Idade:** 24 anos  
