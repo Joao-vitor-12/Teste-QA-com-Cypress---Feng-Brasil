@@ -4,10 +4,15 @@ describe('Cadastro de usuário - Fluxos positivo e negativo', () => {
     it('Deve realizar o cadastro com sucesso', () => {
       cy.visit('https://fengbrasil.com')
 
+      //Home deslogada - Location: “/”
+
       // Verificando se o botão "Cadastre-se" está visível antes de clicar
       cy.get('#register')
         .should('be.visible')
         .click()
+
+
+      //Cadastro - Location: “/register”
 
       // Preenchendo CPF válido
       cy.get('#document')
@@ -50,8 +55,6 @@ describe('Cadastro de usuário - Fluxos positivo e negativo', () => {
       cy.get('#submit_button')
         .should('be.visible')
         .click()
-      
-      // Aqui você pode validar a mensagem de sucesso, se existir
     })
   })
 
@@ -59,10 +62,15 @@ describe('Cadastro de usuário - Fluxos positivo e negativo', () => {
     it('Deve exibir mensagens de erro para dados inválidos', () => {
       cy.visit('https://fengbrasil.com')
 
+        //Home deslogada - Location: “/”
+
         // Verificando se o botão "Cadastre-se" está visível antes de clicar
          cy.get('#register')
         .should('be.visible')
         .click()
+
+
+      //Cadastro - Location: “/register”
 
       // Preenchendo CPF inválido 
       cy.get('#document')
@@ -91,7 +99,7 @@ describe('Cadastro de usuário - Fluxos positivo e negativo', () => {
       cy.wait(200) 
       cy.contains('.ddi_option', '+999 PaísDesconhecido').click() // deverá retornar mensagem de País não encontrado
 
-      // Preenchendo celular inválido (espera erro)
+      // Preenchendo celular inválido 
       cy.get('#cellphone')
         .should('be.visible')
         .type('119999999999') // deverá retornar mensagem de número inválido

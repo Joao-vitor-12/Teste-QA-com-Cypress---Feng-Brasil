@@ -4,7 +4,9 @@ describe("Cadastro válido e inválido - Login", () => {
     it("Deve realizar login com sucesso e fazer logout", () => {
       cy.visit("https://fengbrasil.com");
 
-      // Verificando se o botão "cadastro" está visível antes de clicar
+      //Home deslogada - Location: “/”
+
+      // Verificando se o botão "login" está visível antes de clicar
       cy.get("#login").should("be.visible").click();
 
       // Preenchendo e-mail válido
@@ -17,6 +19,9 @@ describe("Cadastro válido e inválido - Login", () => {
       cy.get("#login_button").should("be.visible").click();
 
       cy.wait(200);
+
+      
+      //Home logada - Location: “/home”
 
       // Verificando se o login foi realizado com sucesso
       cy.get(".welcome_message").should("contain.text", "Bem-vindo(a),QA!");
@@ -32,7 +37,8 @@ describe("Cadastro válido e inválido - Login", () => {
     it("Deve exibir mensagens de erro para login inválido", () => {
       cy.visit("https://fengbrasil.com");
 
-      // Verificando se o botão "cadastro" está visível antes de clicar
+      //Home deslogada - Location: “/”
+      // Verificando se o botão "login" está visível antes de clicar
       cy.get("#login").should("be.visible").click();
 
       // Clicando diretamente em "Entrar" sem preencher os campos
