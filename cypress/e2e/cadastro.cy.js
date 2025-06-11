@@ -60,14 +60,14 @@ describe('Cadastro de usuário - Fluxos positivo e negativo', () => {
       cy.visit('https://fengbrasil.com')
 
         // Verificando se o botão "Cadastre-se" está visível antes de clicar
-      cy.get('#register')
+         cy.get('#register')
         .should('be.visible')
         .click()
 
       // Preenchendo CPF inválido 
       cy.get('#document')
         .should('be.visible')
-        .type('0000000000i') // deverá retornar mensagem de CPF inválido
+        .type('feng123') // deverá retornar mensagem de CPF inválido
 
       // Preenchendo nome inválido 
       cy.get('#name')
@@ -77,12 +77,12 @@ describe('Cadastro de usuário - Fluxos positivo e negativo', () => {
       // Preenchendo e-mail inválido 
       cy.get('#email')
         .should('be.visible')
-        .type('bvitor870.gmail.com') // deverá retornar mensagem de e-mail inválido
+        .type('joao.vitor.com') // deverá retornar mensagem de e-mail inválido
 
       // Preenchendo data inválida 
       cy.get('#birth_date')
         .should('be.visible')
-        .type('30/08/2010') // deverá retornar mensagem de menor de idade 
+        .type('10/06/2017') // deverá retornar mensagem de menor de idade 
 
       // Selecionando DDI inválido 
       cy.get('#ddi')
@@ -94,12 +94,12 @@ describe('Cadastro de usuário - Fluxos positivo e negativo', () => {
       // Preenchendo celular inválido (espera erro)
       cy.get('#cellphone')
         .should('be.visible')
-        .type('1192233456m') // deverá retornar mensagem de número inválido
+        .type('119999999999') // deverá retornar mensagem de número inválido
 
       // Preenchendo senha inválida 
       cy.get('#password')
         .should('be.visible')
-        .type('Feng@') // deverá retornar mensagem de senha inválida
+        .type('SENHA') // deverá retornar mensagem de senha inválida
     })
   })
 })

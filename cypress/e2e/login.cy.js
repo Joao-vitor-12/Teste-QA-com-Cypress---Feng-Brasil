@@ -39,10 +39,10 @@ describe("Cadastro válido e inválido - Login", () => {
       cy.get("#login_button").should("be.visible").click(); // deverá retornar mensagem para preencher os campos primeiro
 
       // Preenchendo e-mail inválido
-      cy.get("#login_email").should("be.visible").type("bvitor870.gmail.com"); // deverá retornar mensagem de e-mail incorreto
+      cy.get("#login_email").should("be.visible").type("joao.vitor@com"); // deverá retornar mensagem de e-mail incorreto
 
       // Preenchendo senha inválida
-      cy.get("#login_password").should("be.visible").type("19280@!"); // deverá retornar mensagem de senha inválida
+      cy.get("#login_password").should("be.visible").type("senha123"); // deverá retornar mensagem de senha inválida
     });
   });
 });
