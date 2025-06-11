@@ -4,7 +4,7 @@ describe('Login de usuário', () => {
   const senha = 'Feng19280@!';
 
   beforeEach(() => {
-    cy.visit('https://fengbrasil.com');
+    cy.visit('/'); //home deslogada
     cy.get('#login').click();
   });
 
@@ -14,16 +14,29 @@ describe('Login de usuário', () => {
     cy.get('#login_password').type(senha);
     cy.get('#login_button').click();
 
-    // Validações após o login
-    cy.url().should('include', '/home');
+    // Validações após o login, verifica se foi realizado com sucesso 
+    cy.url().should('include', '/home'); 
     cy.get('.welcome_message').should('contain.text', 'Bem-vindo');
     cy.get('.welcome_header').should('contain.text', 'Olá');
     
-    // Logout
+    // Realizando o logout
     cy.get('#logout_button').click();
+
+    // Valida que voltou para a home deslogada
+    cy.url().should('eq', '/');
+    cy.get('#login').should('be.visible');
+  });
+});
+
+
+// Cenário negativo: Tentar realizar login com dados inválidos
+describe('Login de usuário com dados inválidos', () => {
+
+  beforeEach(() => {
+    cy.visit('/'); //home deslogada
+    cy.get('#login').click();
   });
 
-  // Teste para verificar mensagens de erro ao tentar login com dados inválidos
   it('Deve exibir mensagens de erro para login inválido', () => {
 
     // Tenta logar sem preencher campos
@@ -39,5 +52,8 @@ describe('Login de usuário', () => {
 
     // Valida mensagem de erro para e-mail e senha incorretas
     cy.get('.error-message').should('contain', 'E-mail ou senha inválidos');
+
+    // Verifica que ainda está na página de login
+    cy.url().should('include', '/login');
   });
 });

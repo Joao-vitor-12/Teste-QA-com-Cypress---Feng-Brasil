@@ -1,4 +1,5 @@
-describe('Cadastro de usuário', () => {
+describe('Cadastro de usuário - cenário positivo', () => {
+
   // Dados válidos usados para o cadastro de usuário
   const usuario = {
     documento: '43626593827',
@@ -10,14 +11,18 @@ describe('Cadastro de usuário', () => {
     senha: 'Feng19280@!'
   };
 
-  
   beforeEach(() => {
-    cy.visit('https://fengbrasil.com');
-    cy.get('#register').click();
+    cy.visit('/'); // home deslogada
+    cy.get('#register').click(); // Vai para a tela de cadastro
   });
 
   // Cenário positivo: realiza cadastro com dados válidos
   it('Deve realizar o cadastro com sucesso', () => {
+
+    //verifica se esta na pagina correta de cadastro “/register”
+    cy.url().should('include', '/register');
+    cy.get('#document').should('be.visible');
+
     cy.get('#document').type(usuario.documento);
     cy.get('#name').type(usuario.nome);
     cy.get('#email').type(usuario.email);
@@ -28,21 +33,35 @@ describe('Cadastro de usuário', () => {
     cy.get('#password').type(usuario.senha);
     cy.get('#submit_button').click();
 
-    // Valida que o cadastro foi concluído e o usuário está na página inicial
-    cy.url().should('eq', 'https://fengbrasil.com/');
-    cy.contains('Cadastre-se').should('be.visible'); 
+    // Valida redirecionamento para pagina home deslogada e visibilidade de botão login
+    cy.url().should('eq', '/'); 
+    cy.get('#login').should('be.visible');
+  });
+});
+
+
+// Cenário negativo: tentar cadastrar com dados inválidos e validar mensagens de erro
+describe('Cadastro de usuário - cenário negativo', () => {
+  beforeEach(() => {
+    cy.visit('/'); // Página inicial deslogada
+    cy.get('#register').click(); // Vai para a tela de cadastro
   });
 
-  // Cenário negativo: tenta cadastrar com dados inválidos e valida mensagens de erro
   it('Deve exibir mensagens de erro para dados inválidos', () => {
-    cy.get('#document').type('feng123'); // Documento inválido (texto não numérico)
-    cy.get('#name').type('Jo');           // Nome muito curto/inválido
-    cy.get('#email').type('joao.vitor.com'); // Email inválido (formato incorreto)
-    cy.get('#birth_date').type('10/06/2017'); // Data de nascimento inválida (menor de 18 anos)
+
+    //verifica se esta na pagina correta de cadastro “/register”
+    cy.url().should('include', '/register');
+    cy.get('#document').should('be.visible');
+
+    // Preenche campos inválidos
+    cy.get('#document').type('feng123');
+    cy.get('#name').type('Jo');
+    cy.get('#email').type('joao.vitor.com');
+    cy.get('#birth_date').type('10/06/2017');
     cy.get('#ddi').click();
-    cy.contains('.ddi_option', '+999 PaísDesconhecido').click(); // Código de país inválido
-    cy.get('#cellphone').type('119999999999'); // Telefone inválido (número muito longo)
-    cy.get('#password').type('SENHA');          // Senha fraca
+    cy.contains('.ddi_option', '+999 PaísDesconhecido').click();
+    cy.get('#cellphone').type('119999999999');
+    cy.get('#password').type('SENHA');
     cy.get('#submit_button').click();
 
     // Valida as mensagens de erro específicas para cada campo inválido (considerando que o sistema exiba mensagens com esses IDs)
@@ -52,5 +71,9 @@ describe('Cadastro de usuário', () => {
     cy.get('#birth_date-helper-text').should('contain', 'Idade mínima é 18');
     cy.get('#cellphone-helper-text').should('contain', 'Telefone inválido');
     cy.get('#password-helper-text').should('contain', 'Senha fraca');
+
+    // Confirma que o usuário ainda está na tela de cadastro
+    cy.url().should('include', '/register');
+    cy.get('#submit_button').should('be.visible');
   });
 });
